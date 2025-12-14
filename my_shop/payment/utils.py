@@ -3,6 +3,7 @@ import hashlib
 import json
 from django.conf import settings
 
+
 def get_liqpay_context(order):
     public_key = settings.LIQPAY_PUBLIC_KEY
     private_key = settings.LIQPAY_PRIVATE_KEY

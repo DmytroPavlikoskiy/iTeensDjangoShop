@@ -13,11 +13,31 @@ from users.forms import UserRegistrationForm
 
 
 @require_POST
-def cart_add(request, product_id):
+def cart_add_product_list(request, product_id):
     cart = HybridCart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.add(product=product)
     messages.success(request, "Товар добавлен в корзину!")
+    return redirect('product_list')
+
+
+@require_POST
+def cart_add_product_detail(request, product_id):
+    return redirect('product_detail')
+
+
+@require_POST
+def cart_product_plus(request, product_id):
+    return redirect('cart_detail')
+
+
+@require_POST
+def cart_product_minus(request, product_id):
+    return redirect('cart_detail')
+
+
+@require_POST
+def cart_product_remove(request, product_id):
     return redirect('product_list')
 
 
@@ -43,16 +63,4 @@ def cart_detail(request):
     return render(request, 'stors/cart_d.html', {
         'cart': cart,
         'recommendations': recommendations
-    })
-
-
-
-def payment(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    liqpay_context = get_liqpay_context(order) 
-    
-    return render(request, 'stors/payment.html', {
-        'order': order,
-        'liqpay_data': liqpay_context['data'],
-        'liqpay_signature': liqpay_context['signature']
     })
