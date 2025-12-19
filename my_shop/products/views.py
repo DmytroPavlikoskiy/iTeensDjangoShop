@@ -1,28 +1,37 @@
-from django.shortcuts import render
-from products.models import Product, Category
-from card.cart import HybridCart
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.contrib import messages
+from .models import Product, Category  
+from card.cart import HybridCart 
 
-def product_list(request):
-    category_slug = request.GET.get('category')
-    search_query = request.GET.get('q')
-    
-    products = Product.objects.filter(
-        available=True
-    ).select_related(
-        'category'
-    ).prefetch_related('poductimage_set')
-        
+def product_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.filter(parent=None) 
+    products = Product.objects.filter(available=True).prefetch_related('images')
+
     if category_slug:
-        products = products.filter(category__slug=category_slug)
-    
-    if search_query:
-        products = products.filter(name__icontains=search_query)
-        
-    categories = Category.objects.all()
-    cart = HybridCart(request)
-    
-    return render(request, 'stors/prodli.html', {
-        'products': products,
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category__in=category.get_descendants(include_self=True))
+
+    query = request.GET.get('search')
+    if query:
+        products = products.filter(name__icontains=query)
+    featured_products = Product.objects.filter(available=True, is_featured=True)[:4]
+
+    context = {
+        'category': category,
         'categories': categories,
-        'cart': cart
+        'products': products,
+        'featured_products': featured_products,
+    }
+    return render(request, 'stores/prodli.html', context)
+
+def product_detail(request, id, slug):
+    product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    specifications = product.specifications.select_related('feature')
+    
+    return render(request, 'stores/product_detail.html', {
+        'product': product,
+        'specifications': specifications
     })

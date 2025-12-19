@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
-from products.models import Product, Category, PoductImage
+from products.models import Product, Category, ProductImage
 from card.models import Order, OrderItem
 from card.cart import HybridCart
 from django.db.models import Q
