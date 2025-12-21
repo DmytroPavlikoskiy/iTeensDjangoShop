@@ -20,6 +20,7 @@ def cart_add_product_list(request, product_id):
     messages.success(request, "Товар добавлен в корзину!")
     return redirect('product_list')
 
+
 #Denus
 @require_POST
 def cart_add_product_detail(request, product_id):
