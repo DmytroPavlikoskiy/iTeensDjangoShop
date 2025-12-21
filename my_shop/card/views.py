@@ -20,25 +20,25 @@ def cart_add_product_list(request, product_id):
     messages.success(request, "Товар добавлен в корзину!")
     return redirect('product_list')
 
-
+#Denus
 @require_POST
 def cart_add_product_detail(request, product_id):
     return redirect('product_detail')
 
-
+#Mish
 @require_POST
 def cart_product_plus(request, product_id):
     return redirect('cart_detail')
 
-
+#Denus
 @require_POST
 def cart_product_minus(request, product_id):
     return redirect('cart_detail')
 
-
+#Mish
 @require_POST
 def cart_product_remove(request, product_id):
-    return redirect('product_list')
+    return redirect('cart_detail')
 
 
 def cart_remove(request, product_id):
