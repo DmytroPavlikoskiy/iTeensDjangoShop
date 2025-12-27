@@ -44,8 +44,8 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0, verbose_name="Залишок на складі")
     available = models.BooleanField(default=True, verbose_name="Доступний до замовлення")
     is_featured = models.BooleanField(default=False, verbose_name="Обраний товар")
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Створено")
+# null должен забраться
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True, verbose_name="Створено")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Оновлено")
 
     class Meta:
@@ -65,7 +65,6 @@ class Product(models.Model):
     
     @property
     def main_image(self):
-        """Повертає перше зображення або заглушку"""
         img = self.images.first()
         if img:
             return img.image.url
@@ -74,7 +73,8 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name="Товар")
-    image = models.ImageField(upload_to='products/', verbose_name="Зображення")
+   # null должен забраться
+    image = models.ImageField(null=True, blank=True, upload_to='products/', verbose_name="Зображення")
     
     class Meta:
         verbose_name = "Зображення товару"

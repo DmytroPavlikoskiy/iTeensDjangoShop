@@ -40,7 +40,11 @@ class ProductAdmin(admin.ModelAdmin):
         'available', 'is_featured', 'category', 'updated_at'
     ]
     list_filter = ['available', 'is_featured', 'category', 'created_at']
+<<<<<<< Updated upstream
     list_editable = ['price', 'stock', 'available', 'is_featured'] 
+=======
+    list_editable = ['price', 'stock', 'available', 'is_featured']
+>>>>>>> Stashed changes
     search_fields = ['name', 'slug', 'description']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductFeatureValueInline, ProductImageInline]
@@ -71,4 +75,8 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ['name', 'unit']
+<<<<<<< Updated upstream
     search_fields = ['name']
+=======
+    search_fields = ['name']
+>>>>>>> Stashed changes
