@@ -1,4 +1,5 @@
 from django.contrib import admin
+# <<<<<<< HEAD
 from django.utils.safestring import mark_safe
 from .models import Category, Product, ProductImage, Feature, ProductFeatureValue
 
@@ -31,20 +32,27 @@ class CategoryAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.image.url}" style="width: 50px; height: 50px; object-fit: cover;">')
         return "-"
     image_show.short_description = "Фото"
+# =======
+# from .models import Category, Product, PoductImage
+
+# class PoductImageInline(admin.TabularInline):
+#     model = PoductImage
+#     extra = 1
+# >>>>>>> origin/checkout
 
 
-@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+# <<<<<<< HEAD
     list_display = [
         'image_show', 'name', 'price', 'stock', 
         'available', 'is_featured', 'category', 'updated_at'
     ]
     list_filter = ['available', 'is_featured', 'category', 'created_at']
-<<<<<<< Updated upstream
+# <<<<<<< Updated upstream
     list_editable = ['price', 'stock', 'available', 'is_featured'] 
-=======
-    list_editable = ['price', 'stock', 'available', 'is_featured']
->>>>>>> Stashed changes
+# # =======
+#     list_editable = ['price', 'stock', 'available', 'is_featured']
+# # >>>>>>> Stashed changes
     search_fields = ['name', 'slug', 'description']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductFeatureValueInline, ProductImageInline]
@@ -75,8 +83,17 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ['name', 'unit']
-<<<<<<< Updated upstream
     search_fields = ['name']
-=======
-    search_fields = ['name']
->>>>>>> Stashed changes
+
+    list_display = ('name', 'category', 'price', 'stock', 'available')
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [ProductImageInline]
+
+
+# class CategoryAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'slug')
+#     prepopulated_fields = {'slug': ('name',)} 
+
+# admin.site.register(Category, CategoryAdmin)
+# admin.site.register(Product, ProductAdmin)
+# >>>>>>> origin/checkout

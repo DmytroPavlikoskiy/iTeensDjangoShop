@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Ваша Корзина</h2>
+<h2 class="page-title">Ваша Корзина</h2>
 
+<!-- <<<<<<< HEAD
 {% for item in cart %}
             <tr style="border-bottom: 1px solid #eee;">
                 <td style="padding: 15px 10px;">{{ item.product.name }}</td>
+======= -->
+{% if cart|length > 0 %}
+    <div class="cart-container">
+        <table class="cart-table">
+            <tr>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
+                <th>Всего</th>
+                <th>Действие</th>
+            </tr>
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+<!-- >>>>>>> origin/checkout -->
                 <td>{{ item.price }}</td>
                 
                 <td>
@@ -21,6 +37,7 @@
                 </td>
                 
                 <td>{{ item.total_price }}</td>
+<!-- <<<<<<< HEAD
                 
                 <td>
                     <form action="{% url 'cart_remove' item.product.id %}" method="post" style="display: inline;">
@@ -33,3 +50,42 @@
                 
             </tr>
             {% endfor %}
+======= -->
+                <td><a href="{% url 'cart_remove' item.product.id %}" class="cart-remove">Удалить</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <div class="cart-total">
+            <h3>Итого: <span class="total-price">{{ cart.get_total_price }} UAH</span></h3>
+            <a href="{% url 'checkout' %}" class="btn checkout-btn">Оформить заказ →</a>
+        </div>
+    </div>
+
+    {% if recommendations %}
+    <div class="rec-section">
+        <h3>Вам может понравиться</h3>
+        <div class="product-grid">
+            {% for product in recommendations %}
+            <div class="card">
+                <div class="card-img"></div>
+                <h4 class="card-title">{{ product.name }}</h4>
+                <p class="card-price">{{ product.price }} UAH</p>
+                <form action="{% url 'cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Добавить</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+{% else %}
+    <div class="empty-cart">
+        <h3>Корзина пуста</h3>
+        <a href="{% url 'product_list' %}" class="btn go-to-catalog">Перейти в каталог</a>
+    </div>
+{% endif %}
+{% endblock %}
+<!-- >>>>>>> origin/checkout -->

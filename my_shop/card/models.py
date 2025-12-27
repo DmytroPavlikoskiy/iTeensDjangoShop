@@ -15,17 +15,35 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
+    PAYMENT_METHODS = [
+        ('online', 'Онлайн оплата'),
+        ('cod', 'Оплата при получении'),
+    ]
+
+    DELIVERY_METHODS = [
+        ('courier', 'Курьером'),
+        ('branch', 'На отделение'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     full_name = models.CharField("ФИО", max_length=250)
     email = models.EmailField()
+    phone = models.CharField(max_length=50, blank=True, null=True)
+    address = models.CharField(max_length=250, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    postal_code = models.CharField(max_length=20, blank=True, null=True)
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='cod')
+    delivery_method = models.CharField(max_length=10, choices=DELIVERY_METHODS, default='courier')
     created_at = models.DateTimeField(auto_now_add=True)
     is_paid = models.BooleanField("Оплачено", default=False)
+
+
 
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
 
-    def __str__(self):
+    def str(self):
         return f"Заказ {self.id}"
 
     @property

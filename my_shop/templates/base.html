@@ -15,9 +15,9 @@
         body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-<<<<<<< Updated upstream
+/* <<<<<<< Updated upstream
         /* Header */
-        header { padding: 20px 0; background: rgba(18, 18, 20, 0.95); position: sticky; top: 0; z-index: 1000; }
+        /* header { padding: 20px 0; background: rgba(18, 18, 20, 0.95); position: sticky; top: 0; z-index: 1000; }
         .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 24px; font-weight: 700; color: #fff; text-decoration: none; }
         .logo span { color: var(--accent-green); }
@@ -28,9 +28,9 @@
         .cart-badge { position: absolute; top: -8px; right: -8px; background: red; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
         /* General Styles */
-        .btn { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; text-decoration: none; display: inline-block; }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
-=======
+        /* .btn { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; text-decoration: none; display: inline-block; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; } */ 
+/* ======= */
         header { padding: 15px 0; background: rgba(18, 18, 20, 0.98); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
         .nav-wrapper { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
         
@@ -50,7 +50,7 @@
         .cart-badge { position: absolute; top: -8px; right: -8px; background: #ff4d4d; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
         .btn { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; text-decoration: none; display: inline-block; text-align: center; }
->>>>>>> Stashed changes
+/* >>>>>>> Stashed changes */
         .section-title { font-size: 24px; margin: 40px 0 20px; }
     </style>
 </head>
@@ -58,7 +58,7 @@
     <header>
         <div class="container nav-wrapper">
             <a href="{% url 'product_list' %}" class="logo">POWER<span>GEN</span></a>
-<<<<<<< Updated upstream
+<!-- <<<<<<< Updated upstream
             <ul class="nav-links">
                 <li><a href="{% url 'product_list' %}">Products</a></li>
                 <li><a href="#">Solutions</a></li>
@@ -75,7 +75,7 @@
 
     <footer style="padding: 40px 0; text-align: center; color: var(--text-muted); border-top: 1px solid #222; margin-top: 50px;">
         <div class="container">© 2025 POWERGEN Industrial</div>
-=======
+======= -->
 
             <div class="header-search">
                 <form action="{% url 'product_list' %}" method="get">
@@ -116,14 +116,14 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-<<<<<<< Updated upstream
-                        document.getElementById('cart-count').innerText = data.cart_total_items;
-                        e.target.innerText = 'ADDED!';
-=======
+// <<<<<<< Updated upstream
+//                         document.getElementById('cart-count').innerText = data.cart_total_items;
+//                         e.target.innerText = 'ADDED!';
+// =======
                         const badge = document.getElementById('cart-count');
                         if (badge) badge.innerText = data.cart_total_items;
                         e.target.innerText = 'ДОДАНО!';
->>>>>>> Stashed changes
+// >>>>>>> Stashed changes
                         e.target.style.background = '#2ecc71';
                         setTimeout(() => { e.target.innerText = 'ADD TO CART'; e.target.style.background = ''; }, 2000);
                     }
