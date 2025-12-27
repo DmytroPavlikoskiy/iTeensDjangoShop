@@ -56,3 +56,6 @@ def payment(request, order_id):
         'liqpay_data': liqpay_context['data'],
         'liqpay_signature': liqpay_context['signature']
     })
+
+def checkout(request):
+    return render(request, 'card/checkout.html')

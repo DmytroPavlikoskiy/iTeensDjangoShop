@@ -39,3 +39,6 @@ def profile(request):
 
     return render(request, 'users/profile.html', context)
 
+def checkout(request):
+    return render(request, 'card/checkout.html')
+
