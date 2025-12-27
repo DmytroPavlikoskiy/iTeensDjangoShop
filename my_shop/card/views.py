@@ -1,20 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-<<<<<<< HEAD
+# <<<<<<< HEAD
 from django.http import HttpResponse
 from products.models import Product, Category, ProductImage
-=======
+# =======
 from products.models import Product
->>>>>>> origin/checkout
+# >>>>>>> origin/checkout
 from card.models import Order, OrderItem
 from card.cart import HybridCart
 from payment.utils import get_liqpay_context
-<<<<<<< HEAD
+# <<<<<<< HEAD
 from users.forms import UserRegistrationForm
 import json
-=======
->>>>>>> origin/checkout
+# =======
+# >>>>>>> origin/checkout
 
 
 @require_POST
@@ -69,33 +69,3 @@ def cart_detail(request):
         'cart': cart,
         'recommendations': recommendations
     })
-
-
-def payment(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    liqpay_context = get_liqpay_context(order) 
-    
-    return render(request, 'stors/payment.html', {
-        'order': order,
-        'liqpay_data': liqpay_context['data'],
-        'liqpay_signature': liqpay_context['signature']
-    })
-
-def payment(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    liqpay_context = get_liqpay_context(order) 
-    
-    return render(request, 'stors/payment.html', {
-        'order': order,
-        'liqpay_data': liqpay_context['data'],
-        'liqpay_signature': liqpay_context['signature']
-    })
-
-<<<<<<< HEAD
-def checkout(request):
-    return render(request, 'card/checkout.html')
-=======
-
-def notNedded():
-    pass
->>>>>>> 64eaf1b01d2e1b9ccfb2a90d90bda8e78fa1adc6
