@@ -6,8 +6,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
-from .models import Order, Payment
+from payment.models import Payment
+from card.models import Order
 from .utils import get_liqpay_context
+# from liqpay import liqpay_data
 
 
 
@@ -26,31 +28,6 @@ def payment_view(request, order_id):
         'liqpay_signature': liqpay_context['signature'],
     })
 
-@api_view(['POST'])
-def checkout(request):
-    user = request.user
-    total_price = request.data.get('total_price')
-
-    if not total_price:
-        return Response({"error": "total_price is required"}, status=400)
-
-    order = Order.objects.create(
-        user=user,
-        total_price=total_price
-    )
-
-    send_mail(
-        subject='Нове замовлення',
-        message=f'Замовлення №{order.id} успішно створене.',
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[user.email],
-        fail_silently=True,
-    )
-
-    return Response({
-        "order_id": order.id,
-        "payment_url": f"/payments/{order.id}/"
-    })
 
 @csrf_exempt
 @api_view(['POST'])
@@ -89,4 +66,7 @@ def liqpay_callback(request):
     order.save()
 
     return Response({"status": "ok"})
+
+
+# def get_liqpay_data(request):
 

@@ -3,11 +3,6 @@
 {% block content %}
 <h2 class="page-title">Ваша Корзина</h2>
 
-<!-- <<<<<<< HEAD
-{% for item in cart %}
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px 10px;">{{ item.product.name }}</td>
-======= -->
 {% if cart|length > 0 %}
     <div class="cart-container">
         <table class="cart-table">
@@ -21,36 +16,13 @@
             {% for item in cart %}
             <tr>
                 <td>{{ item.product.name }}</td>
-<!-- >>>>>>> origin/checkout -->
                 <td>{{ item.price }}</td>
                 
                 <td>
-                    <form action="{% url 'cart_update' item.product.id %}" method="post" style="display: flex; align-items: center; gap: 5px;">
-                        {% csrf_token %}
-                        <input type="number" 
-                               name="quantity" 
-                               value="{{ item.quantity }}" 
-                               min="0" 
-                               style="width: 50px; text-align: center; padding: 5px;"
-                               onchange="this.form.submit()">
-                        </form>
+                
                 </td>
                 
                 <td>{{ item.total_price }}</td>
-<!-- <<<<<<< HEAD
-                
-                <td>
-                    <form action="{% url 'cart_remove' item.product.id %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="background: none; border: none; color: red; cursor: pointer; padding: 0; text-decoration: underline;">
-                            Удалить
-                        </button>
-                    </form>
-                </td>
-                
-            </tr>
-            {% endfor %}
-======= -->
                 <td><a href="{% url 'cart_remove' item.product.id %}" class="cart-remove">Удалить</a></td>
             </tr>
             {% endfor %}
@@ -88,4 +60,3 @@
     </div>
 {% endif %}
 {% endblock %}
-<!-- >>>>>>> origin/checkout -->

@@ -8,6 +8,7 @@ from products.models import Product, Category, ProductImage
 from products.models import Product
 # >>>>>>> origin/checkout
 from card.models import Order, OrderItem
+from django.http import JsonResponse
 from card.cart import HybridCart
 from payment.utils import get_liqpay_context
 # <<<<<<< HEAD
@@ -16,16 +17,65 @@ import json
 # =======
 # >>>>>>> origin/checkout
 
+# @require_POST
+# def cart_add(request, product_id):
+#     cart = HybridCart(request)
+#     product = get_object_or_404(Product, id=product_id)
+#     cart.add(product=product)
+#     messages.success(request, "Товар добавлен в корзину!")
+#     # редирект без namespace
+#     return redirect('product_list')
 
+
+# @require_POST
+# def cart_add(request, product_id):
+#     cart = HybridCart(request)
+#     product = get_object_or_404(Product, id=product_id)
+#     cart.add(product=product)
+#     messages.success(request, "Товар добавлен в корзину!")
+#     # редирект без namespace
+#     return redirect('product_list')
 @require_POST
 def cart_add(request, product_id):
     cart = HybridCart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.add(product=product)
-    messages.success(request, "Товар добавлен в корзину!")
-    # редирект без namespace
-    return redirect('product_list')
+    
+    # Замість messages і redirect повертаємо JSON
+    return JsonResponse({
+        'success': True,
+        'cart_total_items': len(cart),  # Кількість товарів у кошику
+        'message': "Товар додано!"
+    })
 
+
+@require_POST
+def cart_add_with_quantity(request, product_id):
+    cart = HybridCart(request)
+    product = get_object_or_404(Product, id=product_id)
+
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        # Перетворюємо в int і перевіряємо на адекватність
+        quantity = int(data.get("quantity", 1))
+        
+        if quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'message': "Кількість має бути більшою за 0!"
+            }, status=400) # Повертаємо 400 помилку для некоректних даних
+            
+    except (json.JSONDecodeError, ValueError, TypeError):
+        return JsonResponse({'success': False, 'message': 'Invalid data'}, status=400)
+
+    # Важливо: перевір, щоб в HybridCart метод add приймав quantity
+    cart.add(product=product, quantity=quantity)
+    
+    return JsonResponse({
+        'success': True,
+        'cart_total_items': len(cart),
+        'message': f"Додано {quantity} шт."
+    })
 
 @require_POST
 def card_add_product_detail(request):
@@ -67,5 +117,6 @@ def cart_detail(request):
     
     return render(request, 'stors/cart_d.html', {
         'cart': cart,
+        'cart_total_items': len(cart),
         'recommendations': recommendations
     })

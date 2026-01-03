@@ -61,15 +61,18 @@
                 
                 <p class="description-text">{{ product.description|linebreaks }}</p>
 
-                <div class="purchase-box">
-                    <form action="{% url 'cart_add' product.id %}" method="post" style="display:flex; gap:15px; align-items:center;">
-                        {% csrf_token %}
-                        <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" 
-                               style="width: 60px; padding: 10px; background: #000; color: #fff; border: 1px solid #444; border-radius: 8px;">
-                        <button type="submit" class="btn add-to-cart-btn" data-url="{% url 'cart_add' product.id %}" style="flex:1">
-                            ADD TO CART
-                        </button>
-                    </form>
+                <div class="purchase-box" style="display:flex; gap:15px; align-items:center;">
+                    <input type="number" id="product-qty-{{ product.id }}" name="quantity" value="1" min="1" max="{{ product.stock }}" 
+                           style="width: 60px; padding: 10px; background: #000; color: #fff; border: 1px solid #444; border-radius: 8px;">
+                    
+                    <button type="button" 
+                            class="btn add-to-cart-btn" 
+                            data-url="{% url 'cart_add_with_quantity' product.id %}" 
+                            data-product-id="{{ product.id }}"
+                            onclick="addToCartWithQty(event, this)" 
+                            style="flex:1">
+                        ADD TO CART
+                    </button>
                 </div>
 
                 <h3>Характеристики</h3>
@@ -87,6 +90,10 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script src="../../static/js/cardFunctions.js"></script>
+{% endblock %}
 
 <script>
     function changeImage(element, imageUrl) {

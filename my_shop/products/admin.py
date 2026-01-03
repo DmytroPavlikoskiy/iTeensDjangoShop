@@ -1,7 +1,8 @@
 from django.contrib import admin
-# <<<<<<< HEAD
 from django.utils.safestring import mark_safe
 from .models import Category, Product, ProductImage, Feature, ProductFeatureValue
+
+# --- INLINES ---
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -20,6 +21,9 @@ class ProductFeatureValueInline(admin.TabularInline):
     extra = 1
     autocomplete_fields = ['feature'] 
 
+
+# --- ADMIN CLASSES ---
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'parent', 'image_show']
@@ -32,27 +36,16 @@ class CategoryAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.image.url}" style="width: 50px; height: 50px; object-fit: cover;">')
         return "-"
     image_show.short_description = "Фото"
-# =======
-# from .models import Category, Product, PoductImage
-
-# class PoductImageInline(admin.TabularInline):
-#     model = PoductImage
-#     extra = 1
-# >>>>>>> origin/checkout
 
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-# <<<<<<< HEAD
     list_display = [
         'image_show', 'name', 'price', 'stock', 
         'available', 'is_featured', 'category', 'updated_at'
     ]
     list_filter = ['available', 'is_featured', 'category', 'created_at']
-# <<<<<<< Updated upstream
     list_editable = ['price', 'stock', 'available', 'is_featured'] 
-# # =======
-#     list_editable = ['price', 'stock', 'available', 'is_featured']
-# # >>>>>>> Stashed changes
     search_fields = ['name', 'slug', 'description']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductFeatureValueInline, ProductImageInline]
@@ -73,27 +66,18 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     def image_show(self, obj):
-        if obj.images.exists(): 
-            img_url = obj.images.first().image.url
-            return mark_safe(f'<img src="{img_url}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">')
-        return "Нет фото"
+        # Використовуємо related_name='images' з вашої моделі ProductImage
+        first_image = obj.images.first()
+        if first_image and first_image.image: 
+            return mark_safe(f'<img src="{first_image.image.url}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">')
+        return "Немає фото"
     image_show.short_description = "Фото"
 
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
+    # Тут ми залишили тільки ті поля, які реально є в моделі Feature
     list_display = ['name', 'unit']
     search_fields = ['name']
-
-    list_display = ('name', 'category', 'price', 'stock', 'available')
-    prepopulated_fields = {'slug': ('name',)}
-    inlines = [ProductImageInline]
-
-
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = ('name', 'slug')
-#     prepopulated_fields = {'slug': ('name',)} 
-
-# admin.site.register(Category, CategoryAdmin)
-# admin.site.register(Product, ProductAdmin)
-# >>>>>>> origin/checkout
+    # Поля slug, price, stock немає в моделі Feature, тому ми їх видалили звідси,
+    # щоб Django не видавав помилку при запуску.

@@ -25,7 +25,13 @@ class Order(models.Model):
         ('branch', 'На отделение'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='card_orders',
+        null=True,
+        blank=True
+    ) #In prod remove nullabele and blank
     full_name = models.CharField("ФИО", max_length=250)
     email = models.EmailField()
     phone = models.CharField(max_length=50, blank=True, null=True)
